@@ -6,11 +6,8 @@ import org.gradle.api.Project
 class GradlePlugin implements Plugin<Project> {
 
     void apply(Project project) {
+        String hash = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
         project.android.applicationVariants.all { variant ->
-            String hash = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
-            if (hash.isEmpty()) {
-                hash = ""
-            }
             variant.buildConfigField "String", "HASH", "\"${hash}\""
         }
     }
